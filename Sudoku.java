@@ -21,7 +21,9 @@ public class Sudoku
             BufferedReader br = new BufferedReader(fr);
 
             while ((tmp = br.readLine()) != null) {
-                //TODO: Fix regex issue
+                if (tmp.startsWith("Grid")) {
+                    tmp = br.readLine();
+                }
                 String line = tmp.trim();
                 line = line.replace("\n", "");
                 line = line.replaceAll("[?.]", "0");
@@ -41,9 +43,7 @@ public class Sudoku
             for (int j=0; j<size; j++) {
                 for (int i=0; i<size; i++) {
                     int index = getIndex(i,j,size);
-                    System.out.println(index);
                     int val = board[index];
-                    System.out.println(val);
                     if (val !=0) {
                         val = toBase(i+1, j+1, val, size);
                         clause++;
