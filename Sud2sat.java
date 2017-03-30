@@ -3,7 +3,7 @@ import java.io.*;
 import java.nio.file.*;
 import java.nio.charset.Charset;
 
-public class Sudoku
+public class Sud2sat
 {
 	public static void main(String[] args) {
         if (args.length<2) {

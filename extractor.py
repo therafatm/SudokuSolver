@@ -10,8 +10,8 @@ for line in file:
     if re.match("^Grid.*", line):
         if(currentFile != None):
             currentFile.close()
-            call(["javac", "Sudoku.java"])
-            call(["java", "Sudoku", filename, filename+"_dimacs.txt"])
+            call(["javac", "Sud2sat.java"])
+            call(["java", "Sud2sat", filename, filename+"_dimacs.txt"])
             call(["minisat", filename+"_dimacs.txt", filename+"_satout.txt"])
             call(["python3", "sat2sud.py", filename+"_satout.txt", filename+"_solvedBoard.txt"])
         filename = line
