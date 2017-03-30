@@ -22,3 +22,8 @@ for line in file:
 
 currentFile.close()
 file.close()
+
+#Do it on last puzzle
+call(["java", "Sudoku", filename, filename+"_dimacs.txt"])
+call(["minisat", filename+"_dimacs.txt", filename+"_satout.txt"])
+call(["python3", "sat2sud.py", filename+"_satout.txt", filename+"_solvedBoard.txt"])

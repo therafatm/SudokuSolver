@@ -3,7 +3,6 @@ import java.io.*;
 import java.nio.file.*;
 import java.nio.charset.Charset;
 
-
 public class Sudoku
 {
 	public static void main(String[] args) {
@@ -26,7 +25,7 @@ public class Sudoku
                 }
                 String line = tmp.trim();
                 line = line.replace("\n", "");
-                line = line.replaceAll("[?.]", "0");
+                line = line.replaceAll("[?.*]", "0");
                 boardString.append(line);
             }
 
