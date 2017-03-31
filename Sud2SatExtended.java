@@ -3,7 +3,7 @@ import java.io.*;
 import java.nio.file.*;
 import java.nio.charset.Charset;
 
-public class Sud2sat
+public class Sud2SatExtended
 {
 	public static void main(String[] args) {
         if (args.length<2) {
@@ -126,6 +126,70 @@ public class Sud2sat
                                 }
                             }
                         }
+                    }
+                }
+            }
+
+            //Extended Rule
+            dimacs.add("c At most one number in each entry");
+            for (int i=1; i<size+1; i++) {
+                for (int j=1; j<size+1; j++) {
+                    for (int k=1; k<size; k++) {
+                        for (int l=k+1; l<size+1; l++) {
+                            int val1 = toBase(i, j, k, size);
+                            int val2 = toBase(i, j, l, size);
+                            dimacs.add("-"+val1+" "+"-"+val2+" 0");
+                            clause++;
+                        }
+                    }
+                }
+            }
+
+            //Extended Rule
+            dimacs.add("c Each number appears at least once in each row");
+            for (int i=1; i<size+1; i++) {
+                for (int j=1; j<size+1; j++) {
+                    StringBuffer rule = new StringBuffer();
+                    for (int k=1; k<size+1; k++) {
+                        int val1 = toBase(i, j, k, size);
+                        rule.append(val1 + " ");
+                    }
+                    dimacs.add(rule.toString() + "0");
+                    clause++;
+                }
+            }
+
+            //Extended Rule
+            dimacs.add("c Each number appears at least once in each column");
+            for (int i=1; i<size+1; i++) {
+                for (int j=1; j<size+1; j++) {
+                    StringBuffer rule = new StringBuffer();
+                    for (int k=1; k<size+1; k++) {
+                        int val1 = toBase(i, j, k, size);
+                        rule.append(val1 + " ");
+                    }
+                    dimacs.add(rule.toString() + "0");
+                    clause++;
+                }
+            }
+
+
+            //Extended Rule
+            dimacs.add("c Each number appears at least once in each 3X3 subgrid");
+            for (int i=0; i<blocksize; i++) {
+                for (int j=0; j<blocksize; j++) {
+                    for (int z=1; z<size+1; z++) {
+                        StringBuffer rule = new StringBuffer();
+                        for (int x=1; x<blocksize+1; x++) {
+                            for (int y=1; y<blocksize+1; y++) {
+                                int val = toBase(blocksize*i + x,
+                                                blocksize*j + y,
+                                                z, size);
+                                rule.append(val + " ");
+                            }
+                        }
+                        dimacs.add(rule.toString() + '0');
+                        clause++;
                     }
                 }
             }
