@@ -36,7 +36,7 @@ def extract(filename):
     call(["javac", "Sud2sat.java"])
     call(["java", "Sud2sat", filename+".txt", filename+"_dimacs.txt"])
     call(["minisat", filename+"_dimacs.txt", filename+"_satout.txt"])
-    call(["python3", "sat2sud.py", filename+"_satout.txt", filename+"_solvedBoard.txt"])
+    call(["python", "sat2sud.py", filename+"_satout.txt", filename+"_solvedBoard.txt"])
 
 
 if __name__ == "__main__":

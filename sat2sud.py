@@ -18,7 +18,7 @@ with open(args.minisatinputfile, 'r') as content_file:
     minisatOutput = minisatOutput.split()
 
 if (minisatOutput[0] != "SAT"):
-    print ("Sudoku puzzle can't be solved :(")
+    print "Sudoku puzzle can't be solved :("
     exit(0)
 
 # get rid of first line
