@@ -6,6 +6,9 @@ def main(argv):
         print("Incorrect Args")
         return
     infile = argv[0]
+    extended = False
+    if (len(argv) == 2 and argv[1] == "extended"):
+        extended = True
 
     file = open(infile, "r")
     currentFile = None
@@ -20,22 +23,26 @@ def main(argv):
             for _ in range(9):
                 currentFile.write(file.next())
             currentFile.close()
-            extract(filename)
+            extract(filename, extended)
         else:
             filename = infile + "_" + str(puzzle)
             currentFile = open(filename+".txt", "w")
             currentFile.write(line)
             currentFile.close()
-            extract(filename)
+            extract(filename, extended)
             puzzle += 1
 
     file.close()
 
-def extract(filename):
-    call(["javac", "Sud2sat.java"])
-    call(["java", "Sud2sat", filename+".txt", filename+"_dimacs.txt"])
+def extract(filename, extended=False):
+    if extended:
+        program = "Sud2SatExtended"
+    else:
+        program = "Sud2sat"
+    call(["javac", program + ".java"])
+    call(["java", program, filename+".txt", filename+"_dimacs.txt"])
     call(["minisat", filename+"_dimacs.txt", filename+"_satout.txt"])
-    call(["python3", "sat2sud.py", filename+"_satout.txt", filename+"_solvedBoard.txt"])
+    call(["python", "sat2sud.py", filename+"_satout.txt", filename+"_solvedBoard.txt"])
 
 if __name__ == "__main__":
     main(sys.argv[1:])

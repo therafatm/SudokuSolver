@@ -3,32 +3,13 @@ import java.io.*;
 import java.nio.file.*;
 import java.nio.charset.Charset;
 
-public class Sud2sat
+public class Sud2SatExtended
 {
 	public static void main(String[] args) {
         if (args.length<2) {
             System.err.println("Not enough args");
             return;
         }
-
-        Hashtable<Character, Integer> numbers = new Hashtable<Character, Integer>();
-        numbers.put('A', 10);
-        numbers.put('B', 11);
-        numbers.put('C', 12);
-        numbers.put('D', 13);
-        numbers.put('E', 14);
-        numbers.put('F', 15);
-        numbers.put('G', 16);
-        numbers.put('H', 17);
-        numbers.put('I', 18);
-        numbers.put('J', 19);
-        numbers.put('K', 20);
-        numbers.put('L', 21);
-        numbers.put('M', 22);
-        numbers.put('N', 23);
-        numbers.put('O', 24);
-        numbers.put('P', 25);
-
         String filename = args[0];
         String outfile = args[1];
         String tmp = null;
@@ -50,12 +31,7 @@ public class Sud2sat
 
             int[] board = new int[boardString.length()];
             for (int i=0; i<boardString.length(); i++) {
-                if (numbers.containsKey(boardString.charAt(i))) {
-                    board[i] = numbers.get(boardString.charAt(i));
-                }
-                else {
-                    board[i] = boardString.charAt(i) - '0';
-                }
+                board[i] = boardString.charAt(i) - '0';
             }
             int size = (int) Math.sqrt(boardString.length());
 
@@ -150,6 +126,70 @@ public class Sud2sat
                                 }
                             }
                         }
+                    }
+                }
+            }
+
+            //Extended Rule
+            dimacs.add("c At most one number in each entry");
+            for (int i=1; i<size+1; i++) {
+                for (int j=1; j<size+1; j++) {
+                    for (int k=1; k<size; k++) {
+                        for (int l=k+1; l<size+1; l++) {
+                            int val1 = toBase(i, j, k, size);
+                            int val2 = toBase(i, j, l, size);
+                            dimacs.add("-"+val1+" "+"-"+val2+" 0");
+                            clause++;
+                        }
+                    }
+                }
+            }
+
+            //Extended Rule
+            dimacs.add("c Each number appears at least once in each row");
+            for (int i=1; i<size+1; i++) {
+                for (int j=1; j<size+1; j++) {
+                    StringBuffer rule = new StringBuffer();
+                    for (int k=1; k<size+1; k++) {
+                        int val1 = toBase(i, j, k, size);
+                        rule.append(val1 + " ");
+                    }
+                    dimacs.add(rule.toString() + "0");
+                    clause++;
+                }
+            }
+
+            //Extended Rule
+            dimacs.add("c Each number appears at least once in each column");
+            for (int i=1; i<size+1; i++) {
+                for (int j=1; j<size+1; j++) {
+                    StringBuffer rule = new StringBuffer();
+                    for (int k=1; k<size+1; k++) {
+                        int val1 = toBase(i, j, k, size);
+                        rule.append(val1 + " ");
+                    }
+                    dimacs.add(rule.toString() + "0");
+                    clause++;
+                }
+            }
+
+
+            //Extended Rule
+            dimacs.add("c Each number appears at least once in each 3X3 subgrid");
+            for (int i=0; i<blocksize; i++) {
+                for (int j=0; j<blocksize; j++) {
+                    for (int z=1; z<size+1; z++) {
+                        StringBuffer rule = new StringBuffer();
+                        for (int x=1; x<blocksize+1; x++) {
+                            for (int y=1; y<blocksize+1; y++) {
+                                int val = toBase(blocksize*i + x,
+                                                blocksize*j + y,
+                                                z, size);
+                                rule.append(val + " ");
+                            }
+                        }
+                        dimacs.add(rule.toString() + '0');
+                        clause++;
                     }
                 }
             }
