@@ -1,7 +1,6 @@
 import re, sys
 from subprocess import call
 
-
 def main(argv):
     if (len(argv) < 1):
         print("Incorrect Args")
@@ -37,7 +36,6 @@ def extract(filename):
     call(["java", "Sud2sat", filename+".txt", filename+"_dimacs.txt"])
     call(["minisat", filename+"_dimacs.txt", filename+"_satout.txt"])
     call(["python3", "sat2sud.py", filename+"_satout.txt", filename+"_solvedBoard.txt"])
-
 
 if __name__ == "__main__":
     main(sys.argv[1:])

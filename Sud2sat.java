@@ -10,6 +10,25 @@ public class Sud2sat
             System.err.println("Not enough args");
             return;
         }
+
+        Hashtable<Character, Integer> numbers = new Hashtable<Character, Integer>();
+        numbers.put('A', 10);
+        numbers.put('B', 11);
+        numbers.put('C', 12);
+        numbers.put('D', 13);
+        numbers.put('E', 14);
+        numbers.put('F', 15);
+        numbers.put('G', 16);
+        numbers.put('H', 17);
+        numbers.put('I', 18);
+        numbers.put('J', 19);
+        numbers.put('K', 20);
+        numbers.put('L', 21);
+        numbers.put('M', 22);
+        numbers.put('N', 23);
+        numbers.put('O', 24);
+        numbers.put('P', 25);
+
         String filename = args[0];
         String outfile = args[1];
         String tmp = null;
@@ -31,7 +50,12 @@ public class Sud2sat
 
             int[] board = new int[boardString.length()];
             for (int i=0; i<boardString.length(); i++) {
-                board[i] = boardString.charAt(i) - '0';
+                if (numbers.containsKey(boardString.charAt(i))) {
+                    board[i] = numbers.get(boardString.charAt(i));
+                }
+                else {
+                    board[i] = boardString.charAt(i) - '0';
+                }
             }
             int size = (int) Math.sqrt(boardString.length());
 
