@@ -1,13 +1,5 @@
 # SAT-based Sudoku Solver #
 
-### University of Victoria ###
-> CSC 320: Foundations of Computer Science
-
-| Members      | Student Number |
-| ------------ | -------------- |
-| Rahat Mahbub |    V00790465   |
-| Rafat Mahmud |    V00808906   |
-
 ### Files ###
 
  	* Sud2sat.java - reads a Sudoku puzzle (in some specified text format) and converts it to a CNF formula suitable for input to the miniSAT SAT solver.
